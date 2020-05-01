@@ -4,7 +4,9 @@
 @section scripts{
     <script src="~/app/controller/dashboardController.js"></script>
     <script src="~/app/service/dashboardService.js"></script>
-
+    <script src="~/Scripts/ng-file-upload-shim.min.js"></script>
+    <script src="~/Scripts/ng-file-upload.min.js"></script>
+    <script src="~/Scripts/upload.js"></script>
     <script>
         function openfileUpload() {
             var fileName = jQuery('.custom-file-input').val().split("\\").pop();
@@ -16,19 +18,19 @@
 <div class="row" ng-app="etutorApp" ng-controller="dashboardController">
     <div class="col-md-4 bg-primary pt-2 pb-2">
         @*<div class="card">
-            <div class="card-header">
-                Attach file
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Title here" />
-                    <input type="text" class="form-control" placeholder="Upload file here" />
-                    <input type="text" class="form-control" placeholder="Description here" />
-
+                <div class="card-header">
+                    Attach file
                 </div>
-            </div>
-            <div class="card-footer"></div>
-        </div>*@
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title here" />
+                        <input type="text" class="form-control" placeholder="Upload file here" />
+                        <input type="text" class="form-control" placeholder="Description here" />
+
+                    </div>
+                </div>
+                <div class="card-footer"></div>
+            </div>*@
     </div>
     <div class="col-md-8">
         <div class="row">
@@ -40,7 +42,7 @@
                     <div class="card-body">
                         <div class="form-group form-inline">
                             <div class="form-group col-md-10 pl-0">
-                                <input type="text" class="form-control col-md-12" id="filename" disabled placeholder="Title here" ng-model="AttachDocument.name" />
+                                <input type="text" class="form-control col-md-12" id="filename" disabled ng-model="AttachDocument.name" />
                             </div>
                             <div class="form-group col-md-2 pr-0 pull-right">
                                 <div class="custom-file col-md-12">
