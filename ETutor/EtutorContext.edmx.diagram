@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="00a56eaa81224a12a70fbd440ea71f90" Name="Diagram1">
+        <EntityTypeShape EntityType="ETutorModel.Document_tbl" Width="1.5" PointX="3" PointY="28.625" />
+        <EntityTypeShape EntityType="ETutorModel.DocumentComment_tbl" Width="1.5" PointX="8.25" PointY="21.75" />
+        <EntityTypeShape EntityType="ETutorModel.Mail_tbl" Width="1.5" PointX="3" PointY="25.125" />
+        <EntityTypeShape EntityType="ETutorModel.MailRecipit_tbl" Width="1.5" PointX="5.25" PointY="23.375" />
+        <EntityTypeShape EntityType="ETutorModel.Meeting_tbl" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="ETutorModel.MeetingMinits_tbl" Width="1.5" PointX="5.25" PointY="15.75" />
+        <EntityTypeShape EntityType="ETutorModel.Message_tbl" Width="1.5" PointX="3" PointY="7.75" />
+        <EntityTypeShape EntityType="ETutorModel.Post_tbl" Width="1.5" PointX="3" PointY="32.125" />
+        <EntityTypeShape EntityType="ETutorModel.PostComment_tbl" Width="1.5" PointX="5.25" PointY="26.375" />
+        <EntityTypeShape EntityType="ETutorModel.Role_tbl" Width="1.5" PointX="5.75" PointY="12.625" />
+        <EntityTypeShape EntityType="ETutorModel.StudentTutor_tbl" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="ETutorModel.User_tbl" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ETutorModel.UserClaims_tbl" Width="1.5" PointX="3" PointY="4.875" />
+        <EntityTypeShape EntityType="ETutorModel.UserLogins_tbl" Width="1.5" PointX="3" PointY="22.375" />
+        <EntityTypeShape EntityType="ETutorModel.UserMeeting_tbl" Width="1.5" PointX="5.25" PointY="20.25" />
+        <EntityTypeShape EntityType="ETutorModel.UserMessage_tbl" Width="1.5" PointX="5.25" PointY="8.5" />
+        <EntityTypeShape EntityType="ETutorModel.UserRole_tbl" Width="1.5" PointX="8" PointY="17.375" />
+        <AssociationConnector Association="ETutorModel.FK_Document_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_DocumentComment_tbl_Document_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_DocumentComment_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_Mail_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_MailRecipit_tbl_Mail_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_MailRecipit_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_Meeting_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_Meeting_tbl_User_tbl1" />
+        <AssociationConnector Association="ETutorModel.FK_MeetingMinits_tbl_Meeting_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_UserMeeting_tbl_Meeting_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_MeetingMinits_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_MeetingMinits_tbl_User_tbl1" />
+        <AssociationConnector Association="ETutorModel.FK_Message_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_Message_tbl_User_tbl1" />
+        <AssociationConnector Association="ETutorModel.FK_UserMessage_tbl_Message_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_Post_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_PostComment_tbl_Post_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_PostComment_tbl_User_tbl" />
+        <AssociationConnector Association="ETutorModel.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" />
+        <AssociationConnector Association="ETutorModel.FK_StudentTutor_tbl_User_tbl2" />
+        <AssociationConnector Association="ETutorModel.FK_StudentTutor_tbl_User_tbl3" />
+        <AssociationConnector Association="ETutorModel.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" />
+        <AssociationConnector Association="ETutorModel.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" />
+        <AssociationConnector Association="ETutorModel.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" />
+        <AssociationConnector Association="ETutorModel.MeetingMember_tbl" />
+        <AssociationConnector Association="ETutorModel.MeetingMinitsMember_tbl" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

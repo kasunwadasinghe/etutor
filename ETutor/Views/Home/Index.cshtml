@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@section scripts{
+    <script src="~/app/controller/dashboardController.js"></script>
+    <script src="~/app/service/dashboardService.js"></script>
+
+    <script>
+        function openfileUpload() {
+            var fileName = jQuery('.custom-file-input').val().split("\\").pop();
+            filename.value = fileName;
+        }
+    </script>
+}
+
+<div class="row" ng-app="etutorApp" ng-controller="dashboardController">
+    <div class="col-md-4 bg-primary pt-2 pb-2">
+        @*<div class="card">
+            <div class="card-header">
+                Attach file
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Title here" />
+                    <input type="text" class="form-control" placeholder="Upload file here" />
+                    <input type="text" class="form-control" placeholder="Description here" />
+
+                </div>
+            </div>
+            <div class="card-footer"></div>
+        </div>*@
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-12 pb-2">
+                <div class="card">
+                    <div class="card-header">
+                        Attach File
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group form-inline">
+                            <div class="form-group col-md-10 pl-0">
+                                <input type="text" class="form-control col-md-12" id="filename" disabled placeholder="Title here" ng-model="AttachDocument.name" />
+                            </div>
+                            <div class="form-group col-md-2 pr-0 pull-right">
+                                <div class="custom-file col-md-12">
+                                    <label type="text" class="custom-file-label col-md-12" for="fileUploadtxt" style="border:none" />
+                                    <input type="file" class="custom-file-input col-md-12" id="fileUploadtxt" onchange="openfileUpload()" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control col-md-12" placeholder="Description here" ng-model="AttachDocument.description" />
+                        </div>
+                        <div class="form-group">
+                            <input type="button" value="upload" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-10">Test File </div>
+                            <div class="col-md-2">
+                                <a href="#" class="btn">
+                                    <svg aria-hidden="true" focusable="false" width="15" height="15" data-prefix="far" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="#000" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"></path>
+                                    </svg>
+                                </a>
+                                <a href="#" class="btn">
+                                    <svg aria-hidden="true" focusable="false" width="15" height="15" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="#f00" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a href="~/Web.config" class="glyphicon-file">Test File </a>
+                        <div class="text-body">
+                            Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="font-weight-bold">Test User</h6>
+                                <div class="text-body font-weight-light">
+                                    Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="#" class="btn btn-dark">
+                                        <svg aria-hidden="true" focusable="false" width="15" height="15" data-prefix="far" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path fill="#fff" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"></path>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="btn btn-danger">
+                                        <svg aria-hidden="true" focusable="false" width="15" height="15" data-prefix="fas" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path fill="#fff" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group col-md-11 pl-0 pr-0">
+                                <input type="text" class="form-control col-md-12" placeholder="Comment" />
+                            </div>
+                            <div class="form-group col-md-1 pr-0">
+                                <a href="#" class="btn btn-primary col-md-12">
+                                    <svg aria-hidden="true" focusable="false" width="15" data-prefix="fas" data-icon="paper-plane" class="svg-inline--fa fa-paper-plane fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path fill="#fff" d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
