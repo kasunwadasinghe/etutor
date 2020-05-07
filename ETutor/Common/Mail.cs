@@ -18,13 +18,19 @@ namespace ETutor.Common.Mail
             {
                 MailMessage mail = new MailMessage();
                 //SmtpClient SmtpServer = new SmtpClient();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                //SmtpServer.Port = 25;
+                //SmtpServer.Credentials = new System.Net.NetworkCredential("greenwitchetutor@gmail.com", "Etutor@123");
+                //SmtpServer.EnableSsl = false;
+                //SmtpServer.UseDefaultCredentials = false;
+
+                SmtpClient SmtpServer = new SmtpClient("webmail.wunderkindit.com");
                 SmtpServer.Port = 25;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("greenwitchetutor@gmail.com", "Etutor@123");
+                SmtpServer.Credentials = new System.Net.NetworkCredential("info@wunderkindit.com", "!nfo@123");
                 SmtpServer.EnableSsl = false;
                 SmtpServer.UseDefaultCredentials = false;
 
-                mail.From = new MailAddress("greenwitchetutor@gmail.com");
+                mail.From = new MailAddress("info@wunderkindit.com");
                 mail.To.Add(to);
                 mail.To.Add(from);
                 mail.Subject = subject;

@@ -148,7 +148,7 @@ namespace ETutor.Controllers
             {
                 try
                 {
-                    studentTutor.students.ForEach(f =>
+                    studentTutor.selectedStudents.ForEach(f =>
                     {
                         var studenttutor = context.StudentTutor_tbl.Where(w => w.StudentId == f.id).FirstOrDefault();
                         if (studenttutor != null)
@@ -323,7 +323,7 @@ namespace ETutor.Controllers
             return new JsonResult { Data = messagehistory, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult GetMeetings(DropdownViewModel selecteduser)
         {
             GetUser();
@@ -351,6 +351,27 @@ namespace ETutor.Controllers
             }
 
             return new JsonResult { Data = Meetings, JsonRequestBehavior = JsonRequestBehavior.AllowGet, MaxJsonLength = int.MaxValue };
+        }
+
+        [HttpGet]
+        public ActionResult GetTutorActivity()
+        {
+            GetUser();
+            var tutorActivity = new List<TutorActivityViewModel>();
+            using (context = new ETutorEntities())
+            {
+                tutorActivity = context.Role_tbl.Where(w => w.Name == "Tutor").Select(s => s.UserRole_tbl).SelectMany(s => s.Select(ss => ss.User_tbl))
+                    .Select(s => new TutorActivityViewModel
+                    {
+                        tutorId = s.Id,
+                        tutorName = s.UserName,
+                        noMeetings = s.Meeting_tbl2.Count,
+                        noBlogs = s.Post_tbl.Count,
+                        noMessages = s.Message_tbl2.Count
+                    }).ToList();
+            }
+
+            return new JsonResult { Data = tutorActivity, JsonRequestBehavior = JsonRequestBehavior.AllowGet, MaxJsonLength = int.MaxValue };
         }
 
         #region private

@@ -12,14 +12,15 @@
     $scope.MessageHistory = [];
     $scope.MessageSummary = [];
     $scope.MeetingArrangement = [];
+    $scope.TutorActivities = [];
 
     //On Load Events
-    getAttachments();
-    getMeeting();
+    //getAttachments();
+    //getMeeting();
     getUsers();
 
     $scope.SelectedUser = {};
-    $scope.selectedStudents = {};
+    $scope.selectedStudents = [];
         
     $scope.navItemList = {
         isStudent: true,
@@ -27,7 +28,8 @@
         isNonActiveStudent: false,
         isMessageHistory: false,
         isMessageSummary: false,
-        isUserMeetings: false
+        isUserMeetings: false,
+        isTutorActivity: false
     }
 
     $scope.NonActiveStudentSearch = {
@@ -121,6 +123,7 @@
         $scope.navItemList.isMessageHistory = false;
         $scope.navItemList.isMessageSummary = false;
         $scope.navItemList.isUserMeetings = false;
+        $scope.navItemList.isTutorActivity = false;
 
         $scope.navItemList.studentclass = "nav-link";
         $scope.navItemList.studentwithouttutorclass = "nav-link";
@@ -153,6 +156,11 @@
             }
             case "meetingarrangement": {
                 $scope.navItemList.isUserMeetings = true;
+                break;
+            }
+            case "tutoractivity": {
+                $scope.navItemList.isTutorActivity = true;
+                getTutorActivitys();
                 break;
             }
             
@@ -198,9 +206,23 @@ function getNonActiveStudent() {
     }
 
     function getMeetingArrengementByUser() {
+        busyIndicatorService.showBusy("Please wait...");
         adminService.GetMeetings($scope.SelectedUser).then(function (data) {
+            busyIndicatorService.stopBusy();
             $scope.MeetingArrangement = data.data;
         }, function (error) {
+            busyIndicatorService.stopBusy();
+            toastrService.showErrorMessage("Error", 'Network error occured..Please try again later.');
+        });
+    }
+
+    function getTutorActivitys() {
+        busyIndicatorService.showBusy("Please wait...");
+        adminService.GetTutorActivity().then(function (data) {
+            busyIndicatorService.stopBusy();
+            $scope.TutorActivities = data.data;
+        }, function (error) {
+            busyIndicatorService.stopBusy();
             toastrService.showErrorMessage("Error", 'Network error occured..Please try again later.');
         });
     }

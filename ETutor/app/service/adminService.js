@@ -148,12 +148,23 @@
     var GetMeetings = function (user) {
 
         var deferred = $q.defer();
+        $http.post('/Admin/GetMeetings', user).then(function (response) {
+
+            deferred.resolve(response);
+
+        }, function (err) {
+
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+    };
+
+    var GetTutorActivity = function (user) {
+        var deferred = $q.defer();
         $http({
             method: 'GET',
-            url: "/Admin/GetMeetings",
-            params: {
-                selecteduser: user
-            }
+            url: "/Admin/GetTutorActivity"
         }).then(function (response) {
 
             deferred.resolve(response);
@@ -175,6 +186,7 @@
     adminServiceFactory.GetMessageHistory = GetMessageHistory;
     adminServiceFactory.GetMessageForPersonalTutor = GetMessageForPersonalTutor;
     adminServiceFactory.GetMeetings = GetMeetings;
+    adminServiceFactory.GetTutorActivity = GetTutorActivity;
 
     return adminServiceFactory;
 

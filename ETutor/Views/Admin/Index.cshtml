@@ -18,11 +18,13 @@
                 <div class="row p-0 mr-0">
                     <ol class="list-unstyled text-white">
                         <li class="nav-item"><a class="nav-link" ng-click="NavClick('student')">Student Tutor Maping</a></li>
-                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('studentwithouttutor')">Students Without Tutors Report</a></li>
-                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('nonactivestudents')">Students With No Interaction Report</a></li>
-                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagehistory')">Message Summary Report</a></li>
-                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagesummary')">Message Summary Of Personal Tutor Report</a></li>
+                        <li class="nav-item nav-divider navbar-text pl-4 ml-2 text-success font-weight-bold">Reports</li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('studentwithouttutor')">Students Without Tutors</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('nonactivestudents')">Students With No Interaction</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagehistory')">Message Summary</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagesummary')">Message Summary Of Personal Tutor</a></li>
                         <li class="nav-item"><a class="nav-link" ng-click="NavClick('meetingarrangement')">Weekly meeting arrangement by user</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('tutoractivity')">Tutor activity summary report</a></li>
                     </ol>
                 </div>
             </div>
@@ -169,17 +171,12 @@
                 </div>
                 <div class="row p-0 pr-3" ng-show="navItemList.isUserMeetings">
                     <h4 class="panel-title m-3">Weekly meeting arrangement by user</h4>
-                    <hr />
-                    <div class="card">
-                        <div class="card-header">
-                            Student Tutor Map
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group col-md-8">
-                                <select class="form-control col-md-12 dropdown" ng-model="users.SelectedUser" ng-options="option.label for option in users.users track by option.id"></select>
-                            </div>
-                            <div class="form-group col-md-4 mb-3">
-                                <button type="button" class="btn btn-primary glyphicon glyphicon-search btn-block" ng-click="serchMeetings()"> Search</button>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group col-md-12">
+                                    <select class="form-control col-md-12 dropdown" ng-model="SelectedUser" ng-options="option.label for option in users.users track by option.id" ng-change="serchMeetings()"></select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -203,6 +200,32 @@
                                     <td>{{meeting.createdBy}}</td>
                                     <td>{{meeting.description}}</td>
                                     <td>{{meeting.members | join:',':'label'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isTutorActivity">
+                    <h4 class="panel-title m-3">Tutor activity summary report</h4>
+
+                    <div class="col-12 pb-2 pr-0 mt-3">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tutor Id</th>
+                                    <th>Tutor Name</th>
+                                    <th>No Messages</th>
+                                    <th>No Meetings</th>
+                                    <th>No Blogs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="activity in TutorActivities">
+                                    <td>{{activity.tutorId}}</td>
+                                    <td>{{activity.tutorName}}</td>
+                                    <td>{{activity.noMessages}}</td>
+                                    <td>{{activity.noMeetings}}</td>
+                                    <td>{{activity.noBlogs}}</td>
                                 </tr>
                             </tbody>
                         </table>

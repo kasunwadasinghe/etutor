@@ -27,4 +27,6 @@ textarea {
     background-color: #1e2b37;
     border-radius: 0.25rem;
     color : #ffffff;
+    width:100%;
+    text-align:center;
 }
