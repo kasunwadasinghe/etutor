@@ -14,6 +14,8 @@ namespace ETutor.ViewModel
         public string url { get; set; }
         public string description { get; set; }
         public bool isOwner { get; set; }
+        public bool isEdit { get; set; }
         public List<CommentViewModel> comments { get; set; }
+        public CommentViewModel comment { get; set; }
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ETutor.Models;
+using ETutor.ViewModel;
+using System.Security.Principal;
 
 namespace ETutor.Controllers
 {
@@ -15,9 +17,14 @@ namespace ETutor.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ETutorEntities context;
+        IIdentity _identity;
+        UserViewModel user;
 
         public ManageController()
         {
+            GetUser();
+            ViewBag.IsAdmin = user.roleName == "Admin";
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -333,7 +340,22 @@ namespace ETutor.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
+        private void GetUser()
+        {
+            _identity = User.Identity;
+            using (context = new ETutorEntities())
+            {
+                user = context.User_tbl.Where(w => w.UserName == _identity.Name).Select(s => new UserViewModel
+                {
+                    userId = s.Id,
+                    userName = s.UserName,
+                    email = s.Email,
+                    roleId = s.UserRole_tbl.Select(ss => ss.Role_tbl).FirstOrDefault().Id,
+                    roleName = s.UserRole_tbl.Select(ss => ss.Role_tbl).FirstOrDefault().Name
+                }).FirstOrDefault();
+            }
+        }
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

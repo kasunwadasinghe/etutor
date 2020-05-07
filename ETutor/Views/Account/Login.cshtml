@@ -4,74 +4,56 @@
     ViewBag.Title = "Log in";
 }
 
-<link href="~/Content/loginStyle.css" rel="stylesheet" />
+<html class="gr__getbootstrap_com" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - eTutor</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/font-glyphicon.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/Content/loginStyle.css" rel="stylesheet" />
+    <link href="~/Content/signin.css" rel="stylesheet" />
+</head>
+<body class="text-center" data-gr-c-s-loaded="true" style="background-image:url(../images/login_background.jpg)">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h1 class="h3 mb-3 font-weight-normal text-white">Sign in</h1>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
+                <div class="col-md-12">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "User name" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
+                <div class="col-md-12">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "text-white" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" value="Log in" class="btn btn-lg btn-secondary btn-block" />
+                </div>
+            </div>
+        }
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/angularjs")
+    @Scripts.Render("~/bundles/bootstrap")
 
-
-<div class="sidenav">
-    <div class="login-main-text">
-        <h2>eTutor<br> @ViewBag.Title.</h2>
-        <p>Login from here to access.</p>
-    </div>
-</div>
-<div class="main">
-    <div class="col-md-6 col-sm-12">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-black" />
-                    </div>
-                </div>
-                @*<p>
-                @Html.ActionLink("Register as a new user", "Register")
-            </p>*@
-                @* Enable this once you have account confirmation enabled for password reset functionality
-            <p>
-                @Html.ActionLink("Forgot your password?", "ForgotPassword")
-            </p>*@
-            }
-        </section>
-    </div>
-</div>
-<h2></h2>
-<div class="row">
-    <div class="col-md-8">
-        
-    </div>
-    @*<div class="col-md-4">
-            <section id="socialLoginForm">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-            </section>
-        </div>*@
-</div>
-
-@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+</body>
+</html>

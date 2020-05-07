@@ -8,10 +8,13 @@ namespace ETutor.ViewModel
     public class CommentViewModel
     {
         public int commentId { get; set; }
+        public int attachmentId { get; set; }
+        public int postId { get; set; }
         public DateTime? commentedOn { get; set; }
         public string commentBy { get; set; }
         public string commentById { get; set; }
         public string text { get; set; }
         public bool isOwner { get; set; }
+        public bool isEdit { get; set; }
     }
 }

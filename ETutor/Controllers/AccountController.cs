@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ETutor.Models;
+using Microsoft.Owin;
 
 namespace ETutor.Controllers
 {
@@ -17,15 +18,18 @@ namespace ETutor.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ETutorEntities _context;
 
         public AccountController()
         {
+           
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ETutorEntities context)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            Context = context;
         }
 
         public ApplicationSignInManager SignInManager
@@ -49,6 +53,18 @@ namespace ETutor.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ETutorEntities Context
+        {
+            get
+            {
+                return _context;
+            }
+            private set
+            {
+                _context = value;
             }
         }
 
@@ -449,6 +465,7 @@ namespace ETutor.Controllers
             {
                 return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
         }
 

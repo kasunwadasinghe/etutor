@@ -1,0 +1,4 @@
+2020-05-06 21:14:23,007 INFO System
+2020-05-06 21:14:23,013 DEBUG The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+2020-05-06 21:14:26,518 INFO System
+2020-05-06 21:14:26,518 DEBUG The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at

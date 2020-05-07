@@ -21,6 +21,7 @@ namespace ETutor
         }
     
         public int Id { get; set; }
+        public string PostTitle { get; set; }
         public string PostBody { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<System.DateTime> CreateOn { get; set; }

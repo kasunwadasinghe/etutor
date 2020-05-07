@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script src="~/app/controller/messageController.js"></script>
+    <script src="~/app/service/messageService.js"></script>
+    <script src="~/app/controller/adminController.js"></script>
+    <script src="~/app/service/adminService.js"></script>
+}
+
+    <div class="col-md-12 p-0" ng-app="etutorApp">
+        @Html.Partial("_Message")
+        <div class="row p-0" ng-controller="adminController">
+            <div class="col-md-3 bg-primary pb-3 pt-3">
+                <div class="row p-0 mr-0">
+                    <ol class="list-unstyled text-white">
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('student')">Student Tutor Maping</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('studentwithouttutor')">Students Without Tutors Report</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('nonactivestudents')">Students With No Interaction Report</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagehistory')">Message Summary Report</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('messagesummary')">Message Summary Of Personal Tutor Report</a></li>
+                        <li class="nav-item"><a class="nav-link" ng-click="NavClick('meetingarrangement')">Weekly meeting arrangement by user</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row p-0 pr-3" ng-show="navItemList.isStudent">
+                    <h4 class="panel-title m-3">Student Tutor Maping</h4>
+                    <hr>
+                    <div class="col-12 pb-2 pr-0">
+                        <div class="card">
+                            <div class="card-header">
+                                Student Tutor Map
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group col-md-12 pl-0 pr-0">
+                                    <div ng-dropdown-multiselect="" options="users.students" selected-model="selectedStudents" checkboxes="true" extra-settings="userDropdownSetting" class="dropdown col-md-12"></div>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control col-md-12 dropdown" ng-model="users.tutorId" ng-options="option.label for option in users.tutors track by option.id"></select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" value="Save" class="btn btn-primary" ng-click="saveStudentTutor()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isStudentWithOutTutor">
+                    <h4 class="panel-title m-3">Students Without Tutors Report</h4>
+                    <hr />
+                    <div class="col-12 pb-2 pr-0">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>StudentId</th>
+                                    <th>Student User Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="student in StudentWithOutTutor">
+                                    <td>{{student.studentId}}</td>
+                                    <td>{{student.studentUserName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isNonActiveStudent">
+                    <h4 class="panel-title m-3">Students with no interaction for given period</h4>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="form-inline">
+                            <div class="form-group col-md-4">
+                                <p class="input-group">
+                                    <input type="text" class="form-control col-11" uib-datepicker-popup="{{format}}" ng-model="NonActiveStudentSearch.from" is-open="NonActiveStudentSearch.fromopened" datepicker-options="fromdateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                    <span class="input-group-btn pl-1">
+                                        <button type="button" class="btn btn-primary" ng-click="openfrom()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <p class="input-group">
+                                    <input type="text" class="form-control col-11" uib-datepicker-popup="{{format}}" ng-model="NonActiveStudentSearch.to" is-open="NonActiveStudentSearch.toopened" datepicker-options="todateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                    <span class="input-group-btn pl-1">
+                                        <button type="button" class="btn btn-primary" ng-click="opento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="form-group col-md-4 mb-3">
+                                <button type="button" class="btn btn-primary glyphicon glyphicon-search btn-block" ng-click="serchNonActiveStudents()"> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 pb-2 pr-0 mt-3">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>StudentId</th>
+                                    <th>Student User Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="student in NonActiveStudents">
+                                    <td>{{student.userId}}</td>
+                                    <td>{{student.userName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isMessageHistory">
+                    <h4 class="panel-title m-3">Number of Massages In Last 7 days and overall by user</h4>
+                    <hr />
+                    <div class="col-md-12" id="MessageSummary">
+
+                    </div>
+                    <div class="col-12 pb-2 pr-0 mt-3">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>User Id</th>
+                                    <th>User Name</th>
+                                    <th>User Type</th>
+                                    <th>Overall Message</th>
+                                    <th>Last 7 Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="user in MessageHistory">
+                                    <td>{{user.UserId}}</td>
+                                    <td>{{user.UserName}}</td>
+                                    <td>{{user.UserType}}</td>
+                                    <td>{{user.overallNoMessage}}</td>
+                                    <td>{{user.last7NoMessages}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isMessageSummary">
+                    <h4 class="panel-title m-3">Average number of messages for each personal tutor</h4>
+                    <hr />
+                    <div class="col-12 pb-2 pr-0 mt-3">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Tutor Id</th>
+                                    <th>Overall Message</th>
+                                    <th>No Messages</th>
+                                    <th>Avarage Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="user in MessageSummary">
+                                    <td>{{user.student}}</td>
+                                    <td>{{user.tutor}}</td>
+                                    <td>{{user.overallNoMessage}}</td>
+                                    <td>{{user.tutorMessages}}</td>
+                                    <td>{{user.tutorMessages/user.overallNoMessage}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row p-0 pr-3" ng-show="navItemList.isUserMeetings">
+                    <h4 class="panel-title m-3">Weekly meeting arrangement by user</h4>
+                    <hr />
+                    <div class="card">
+                        <div class="card-header">
+                            Student Tutor Map
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group col-md-8">
+                                <select class="form-control col-md-12 dropdown" ng-model="users.SelectedUser" ng-options="option.label for option in users.users track by option.id"></select>
+                            </div>
+                            <div class="form-group col-md-4 mb-3">
+                                <button type="button" class="btn btn-primary glyphicon glyphicon-search btn-block" ng-click="serchMeetings()"> Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 pb-2 pr-0 mt-3">
+                        <h5 class="text-body">{{users.SelectedUser.label}}</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Venue</th>
+                                    <th>Arrenge By</th>
+                                    <th>Invited</th>
+                                    <th>Agenda</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="meeting in MeetingArrangement">
+                                    <td>{{meeting.date}}</td>
+                                    <td>{{meeting.place}}</td>
+                                    <td>{{meeting.createdBy}}</td>
+                                    <td>{{meeting.description}}</td>
+                                    <td>{{meeting.members | join:',':'label'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

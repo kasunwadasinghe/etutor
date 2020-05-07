@@ -27,15 +27,18 @@ namespace ETutor
             this.MeetingMinits_tbl1 = new HashSet<MeetingMinits_tbl>();
             this.Message_tbl = new HashSet<Message_tbl>();
             this.Message_tbl1 = new HashSet<Message_tbl>();
-            this.Post_tbl = new HashSet<Post_tbl>();
-            this.PostComment_tbl = new HashSet<PostComment_tbl>();
-            this.StudentTutor_tbl = new HashSet<StudentTutor_tbl>();
-            this.StudentTutor_tbl1 = new HashSet<StudentTutor_tbl>();
             this.UserClaims_tbl = new HashSet<UserClaims_tbl>();
             this.UserLogins_tbl = new HashSet<UserLogins_tbl>();
             this.UserRole_tbl = new HashSet<UserRole_tbl>();
             this.Meeting_tbl2 = new HashSet<Meeting_tbl>();
             this.MeetingMinits_tbl2 = new HashSet<MeetingMinits_tbl>();
+            this.Message_tbl2 = new HashSet<Message_tbl>();
+            this.Post_tbl = new HashSet<Post_tbl>();
+            this.PostComment_tbl = new HashSet<PostComment_tbl>();
+            this.StudentTutor_tbl = new HashSet<StudentTutor_tbl>();
+            this.StudentTutor_tbl1 = new HashSet<StudentTutor_tbl>();
+            this.StudentTutor_tbl2 = new HashSet<StudentTutor_tbl>();
+            this.StudentTutor_tbl3 = new HashSet<StudentTutor_tbl>();
         }
     
         public string Id { get; set; }
@@ -73,14 +76,6 @@ namespace ETutor
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message_tbl> Message_tbl1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post_tbl> Post_tbl { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PostComment_tbl> PostComment_tbl { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserClaims_tbl> UserClaims_tbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLogins_tbl> UserLogins_tbl { get; set; }
@@ -90,5 +85,19 @@ namespace ETutor
         public virtual ICollection<Meeting_tbl> Meeting_tbl2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MeetingMinits_tbl> MeetingMinits_tbl2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Message_tbl> Message_tbl2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Post_tbl> Post_tbl { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostComment_tbl> PostComment_tbl { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentTutor_tbl> StudentTutor_tbl3 { get; set; }
     }
 }

@@ -15,8 +15,8 @@ namespace ETutor
     public partial class StudentTutor_tbl
     {
         public int Id { get; set; }
-        public Nullable<int> StudentId { get; set; }
-        public Nullable<int> TutorId { get; set; }
+        public string StudentId { get; set; }
+        public string TutorId { get; set; }
         public Nullable<bool> IsCurrent { get; set; }
         public Nullable<System.DateTime> CreateOn { get; set; }
         public string CreatedBy { get; set; }
@@ -25,5 +25,7 @@ namespace ETutor
     
         public virtual User_tbl User_tbl { get; set; }
         public virtual User_tbl User_tbl1 { get; set; }
+        public virtual User_tbl User_tbl2 { get; set; }
+        public virtual User_tbl User_tbl3 { get; set; }
     }
 }

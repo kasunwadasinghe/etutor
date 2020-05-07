@@ -18,7 +18,6 @@ namespace ETutor
         public Meeting_tbl()
         {
             this.MeetingMinits_tbl = new HashSet<MeetingMinits_tbl>();
-            this.UserMeeting_tbl = new HashSet<UserMeeting_tbl>();
             this.User_tbl2 = new HashSet<User_tbl>();
         }
     
@@ -36,8 +35,6 @@ namespace ETutor
         public virtual User_tbl User_tbl1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MeetingMinits_tbl> MeetingMinits_tbl { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserMeeting_tbl> UserMeeting_tbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User_tbl> User_tbl2 { get; set; }
     }

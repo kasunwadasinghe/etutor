@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Blog";
+}
+
+@section scripts{
+    <script src="~/app/controller/blogController.js"></script>
+    <script src="~/app/service/blogService.js"></script>
+    <script src="~/app/controller/messageController.js"></script>
+    <script src="~/app/service/messageService.js"></script>
+}
+
+<div class="col-md-12" ng-app="etutorApp">
+    @Html.Partial("_Message")
+    <div class="col-12 p-0 m-0" ng-controller="blogController">
+        <div class="row pb-3">
+            <div class="col-md-10 col-sm-0">
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#createPost">Create Post</button>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="modal" id="createPost" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Post</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body pl-2 pr-2">
+                            <div class="row p-0">
+                                <div class="col-md-12">
+                                    <div class="form-group col-md-12 pl-0 pr-0">
+                                        <input type="text" class="form-control col-md-12" placeholder="Title" ng-model="BlogPost.title" />
+                                    </div>
+                                    <div class="form-group col-md-12 pl-0 pr-0">
+                                        <textarea type="text" class="form-control col-md-12" placeholder="Post content goes here" ng-model="BlogPost.description"></textarea>
+                                    </div>
+                                    <div class="form-inline col-md-12">
+                                        <div class="col-md-6">
+                                            <input type="button" class="btn btn-block btn-primary col-md-12" value="Save" ng-click="createBlogPost()" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="button" class="btn btn-block btn-secondary col-md-12" value="Close" data-dismiss="modal" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2 bl-">
+            <div class="col-md-6" ng-repeat="post in FeaturePost">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" ng-click="showBlogPost(post.postId)">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">{{post.autherBy}}</strong>
+                        <h3 class="mb-0">{{post.title}}</h3>
+                        <div class="mb-1 text-muted">
+                            {{post.createdOn}}
+                        </div>
+                        <p class="card-text mb-auto">{{post.description}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <div class="blog-post" ng-hide="Post.isEdit">
+                    <h2 class="blog-post-title">{{Post.title}} <button class="btn glyphicon glyphicon-edit" ng-show="Post.isOwner" ng-click="editBlogPost(Post)"></button><button class="btn glyphicon glyphicon-trash text-danger p-0" ng-show="Post.isOwner" ng-click="deleteBlogPost(Post.postId)"></button></h2>
+                    <p class="blog-post-meta">{{Post.createdOn}} <span>{{Post.autherBy}}</span></p>
+                    <p>{{Post.description}}</p>
+
+                    <div class="row pb-2 pt-2" ng-repeat="comment in Post.comments">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-10">{{comment.commentBy}}</div>
+                                        <div class="col-md-2" ng-show="comment.isOwner">
+                                            <button class="btn glyphicon glyphicon-edit" ng-hide="comment.isEdit" ng-click="editComment(comment)">
+                                            </button>
+                                            <button class="btn glyphicon glyphicon-trash text-danger p-0" ng-click="deleteComment(comment.commentId)">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-body font-weight-light col-md-12" ng-hide="comment.isEdit">
+                                        {{comment.text}}
+                                    </div>
+                                    <div class="row" ng-show="comment.isEdit">
+                                        <div class="col-md-12 form-inline">
+                                            <div class="form-group col-md-11 pl-0">
+                                                <textarea type="text" class="form-control col-md-12" placeholder="Comment" ng-model="comment.text" ng-required="true"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-1 pr-0">
+                                                <button class="btn btn-primary col-md-12 glyphicon glyphicon-send text-center pt-3 pb-3" ng-click="updateComment(comment)">
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-inline p-0">
+                        <div class="form-group col-md-11 pl-0 pr-0">
+                            <textarea type="text" class="form-control col-md-12" placeholder="Comment" ng-model="Post.comment.text" ng-required="true"></textarea>
+                        </div>
+                        <div class="form-group col-md-1 pr-0">
+                            <button class="btn btn-primary col-md-12 glyphicon glyphicon-send text-center pt-3 pb-3" ng-click="addComment(Post)">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="Post.isEdit">
+                    <div class="form-group col-md-12 pl-0 pr-0">
+                        <input type="text" class="form-control col-md-12" placeholder="Title" ng-model="Post.title" />
+                    </div>
+                    <div class="form-group col-md-12 pl-0 pr-0">
+                        <textarea type="text" class="form-control col-md-12" placeholder="Post content goes here" ng-model="Post.description"></textarea>
+                    </div>
+                    <div class="form-inline col-md-12 pl-0 pr-0">
+                        <div class="form-group col-md-6">
+                            <input type="button" class="btn btn-block btn-primary col-md-12" value="Save" ng-click="updateBlogPost(Post)" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="button" class="btn btn-block btn-secondary col-md-12" value="Cancel" ng-click="editBlogPost(Post)" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-4">
+                    <h4 class="font-italic">Blog Posts</h4>
+                    <ol class="list-unstyled mb-0">
+                        <li ng-repeat="post in BlogPostList"><i class="glyphicon glyphicon-link pr-2"></i><a class="btn-link" ng-click="showBlogPost(post.postId)">{{post.title}}</a></li>
+                    </ol>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+
+
+

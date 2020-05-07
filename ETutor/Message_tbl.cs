@@ -17,7 +17,7 @@ namespace ETutor
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Message_tbl()
         {
-            this.UserMessage_tbl = new HashSet<UserMessage_tbl>();
+            this.User_tbl2 = new HashSet<User_tbl>();
         }
     
         public int Id { get; set; }
@@ -31,6 +31,6 @@ namespace ETutor
         public virtual User_tbl User_tbl { get; set; }
         public virtual User_tbl User_tbl1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserMessage_tbl> UserMessage_tbl { get; set; }
+        public virtual ICollection<User_tbl> User_tbl2 { get; set; }
     }
 }

@@ -18,9 +18,9 @@ namespace ETutor.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ETutorEntities : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
+        public ETutorEntities()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
@@ -36,9 +36,9 @@ namespace ETutor.Models
             modelBuilder.Entity<IdentityRole>().ToTable("Role_tbl");
         }
 
-        public static ApplicationDbContext Create()
+        public static ETutorEntities Create()
         {
-            return new ApplicationDbContext();
+            return new ETutorEntities();
         }
     }
 }

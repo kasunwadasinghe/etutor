@@ -110,6 +110,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostTitle" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="PostBody" Type="varchar(max)" Nullable="false" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreateOn" Type="datetime" />
@@ -140,8 +141,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="StudentId" Type="int" />
-          <Property Name="TutorId" Type="int" />
+          <Property Name="StudentId" Type="nvarchar" MaxLength="128" />
+          <Property Name="TutorId" Type="nvarchar" MaxLength="128" />
           <Property Name="IsCurrent" Type="bit" />
           <Property Name="CreateOn" Type="datetime" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
@@ -187,20 +188,12 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <EntityType Name="UserMeeting_tbl">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="MeetingId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="MeetingId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="UserMessage_tbl">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="MessageId" />
           </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="MessageId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRole_tbl">
@@ -526,15 +519,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserMeeting_tbl_Meeting_tbl">
-          <End Role="Meeting_tbl" Type="Self.Meeting_tbl" Multiplicity="1" />
-          <End Role="UserMeeting_tbl" Type="Self.UserMeeting_tbl" Multiplicity="*" />
+        <Association Name="FK_StudentTutor_tbl_User_tbl4">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="StudentTutor_tbl" Type="Self.StudentTutor_tbl" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Meeting_tbl">
+            <Principal Role="User_tbl">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserMeeting_tbl">
-              <PropertyRef Name="MeetingId" />
+            <Dependent Role="StudentTutor_tbl">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentTutor_tbl_User_tbl5">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="StudentTutor_tbl" Type="Self.StudentTutor_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentTutor_tbl">
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -547,6 +552,18 @@
             </Principal>
             <Dependent Role="UserMessage_tbl">
               <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMessage_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="1" />
+          <End Role="UserMessage_tbl" Type="Self.UserMessage_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMessage_tbl">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -567,7 +584,6 @@
           <EntitySet Name="User_tbl" EntityType="Self.User_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserClaims_tbl" EntityType="Self.UserClaims_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins_tbl" EntityType="Self.UserLogins_tbl" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserMeeting_tbl" EntityType="Self.UserMeeting_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserMessage_tbl" EntityType="Self.UserMessage_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole_tbl" EntityType="Self.UserRole_tbl" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" Association="Self.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id">
@@ -674,12 +690,20 @@
             <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserMeeting_tbl_Meeting_tbl" Association="Self.FK_UserMeeting_tbl_Meeting_tbl">
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-            <End Role="UserMeeting_tbl" EntitySet="UserMeeting_tbl" />
+          <AssociationSet Name="FK_StudentTutor_tbl_User_tbl4" Association="Self.FK_StudentTutor_tbl_User_tbl4">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentTutor_tbl_User_tbl5" Association="Self.FK_StudentTutor_tbl_User_tbl5">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
           </AssociationSet>
           <AssociationSet Name="FK_UserMessage_tbl_Message_tbl" Association="Self.FK_UserMessage_tbl_Message_tbl">
             <End Role="Message_tbl" EntitySet="Message_tbl" />
+            <End Role="UserMessage_tbl" EntitySet="UserMessage_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMessage_tbl_User_tbl" Association="Self.FK_UserMessage_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="UserMessage_tbl" EntitySet="UserMessage_tbl" />
           </AssociationSet>
         </EntityContainer>
@@ -687,84 +711,500 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ETutorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Document_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_Document_tbl_User_tbl" FromRole="Document_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="DocumentComment_tbl" Relationship="Self.FK_DocumentComment_tbl_Document_tbl" FromRole="Document_tbl" ToRole="DocumentComment_tbl" />
+        </EntityType>
+        <EntityType Name="DocumentComment_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Document_tbl" Relationship="Self.FK_DocumentComment_tbl_Document_tbl" FromRole="DocumentComment_tbl" ToRole="Document_tbl" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_DocumentComment_tbl_User_tbl" FromRole="DocumentComment_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="Mail_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TriggerBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsFail" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_Mail_tbl_User_tbl" FromRole="Mail_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="MailRecipit_tbl" Relationship="Self.FK_MailRecipit_tbl_Mail_tbl" FromRole="Mail_tbl" ToRole="MailRecipit_tbl" />
+        </EntityType>
+        <EntityType Name="MailRecipit_tbl">
+          <Key>
+            <PropertyRef Name="MailId" />
+            <PropertyRef Name="ToId" />
+          </Key>
+          <Property Name="MailId" Type="Int32" Nullable="false" />
+          <Property Name="ToId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsFail" Type="Boolean" />
+          <NavigationProperty Name="Mail_tbl" Relationship="Self.FK_MailRecipit_tbl_Mail_tbl" FromRole="MailRecipit_tbl" ToRole="Mail_tbl" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_MailRecipit_tbl_User_tbl" FromRole="MailRecipit_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="Meeting_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="MeetingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Venue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsCanceled" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_Meeting_tbl_User_tbl" FromRole="Meeting_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl1" Relationship="Self.FK_Meeting_tbl_User_tbl1" FromRole="Meeting_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="MeetingMinits_tbl" Relationship="Self.FK_MeetingMinits_tbl_Meeting_tbl" FromRole="Meeting_tbl" ToRole="MeetingMinits_tbl" />
+          <NavigationProperty Name="User_tbl2" Relationship="Self.MeetingMember_tbl" FromRole="Meeting_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="MeetingMinits_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeetingId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Meeting_tbl" Relationship="Self.FK_MeetingMinits_tbl_Meeting_tbl" FromRole="MeetingMinits_tbl" ToRole="Meeting_tbl" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_MeetingMinits_tbl_User_tbl" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl1" Relationship="Self.FK_MeetingMinits_tbl_User_tbl1" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl2" Relationship="Self.MeetingMinitsMember_tbl" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="Message_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_Message_tbl_User_tbl" FromRole="Message_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl1" Relationship="Self.FK_Message_tbl_User_tbl1" FromRole="Message_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl2" Relationship="ETutorModel.UserMessage_tbl" FromRole="Message_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="Role_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserRole_tbl" Relationship="Self.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" FromRole="Role_tbl" ToRole="UserRole_tbl" />
+        </EntityType>
+        <EntityType Name="User_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Document_tbl" Relationship="Self.FK_Document_tbl_User_tbl" FromRole="User_tbl" ToRole="Document_tbl" />
+          <NavigationProperty Name="DocumentComment_tbl" Relationship="Self.FK_DocumentComment_tbl_User_tbl" FromRole="User_tbl" ToRole="DocumentComment_tbl" />
+          <NavigationProperty Name="Mail_tbl" Relationship="Self.FK_Mail_tbl_User_tbl" FromRole="User_tbl" ToRole="Mail_tbl" />
+          <NavigationProperty Name="MailRecipit_tbl" Relationship="Self.FK_MailRecipit_tbl_User_tbl" FromRole="User_tbl" ToRole="MailRecipit_tbl" />
+          <NavigationProperty Name="Meeting_tbl" Relationship="Self.FK_Meeting_tbl_User_tbl" FromRole="User_tbl" ToRole="Meeting_tbl" />
+          <NavigationProperty Name="Meeting_tbl1" Relationship="Self.FK_Meeting_tbl_User_tbl1" FromRole="User_tbl" ToRole="Meeting_tbl" />
+          <NavigationProperty Name="MeetingMinits_tbl" Relationship="Self.FK_MeetingMinits_tbl_User_tbl" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
+          <NavigationProperty Name="MeetingMinits_tbl1" Relationship="Self.FK_MeetingMinits_tbl_User_tbl1" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
+          <NavigationProperty Name="Message_tbl" Relationship="Self.FK_Message_tbl_User_tbl" FromRole="User_tbl" ToRole="Message_tbl" />
+          <NavigationProperty Name="Message_tbl1" Relationship="Self.FK_Message_tbl_User_tbl1" FromRole="User_tbl" ToRole="Message_tbl" />
+          <NavigationProperty Name="UserClaims_tbl" Relationship="Self.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserClaims_tbl" />
+          <NavigationProperty Name="UserLogins_tbl" Relationship="Self.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserLogins_tbl" />
+          <NavigationProperty Name="UserRole_tbl" Relationship="Self.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserRole_tbl" />
+          <NavigationProperty Name="Meeting_tbl2" Relationship="Self.MeetingMember_tbl" FromRole="User_tbl" ToRole="Meeting_tbl" />
+          <NavigationProperty Name="MeetingMinits_tbl2" Relationship="Self.MeetingMinitsMember_tbl" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
+          <NavigationProperty Name="Message_tbl2" Relationship="ETutorModel.UserMessage_tbl" FromRole="User_tbl" ToRole="Message_tbl" />
+          <NavigationProperty Name="Post_tbl" Relationship="ETutorModel.FK_Post_tbl_User_tbl" FromRole="User_tbl" ToRole="Post_tbl" />
+          <NavigationProperty Name="PostComment_tbl" Relationship="ETutorModel.FK_PostComment_tbl_User_tbl" FromRole="User_tbl" ToRole="PostComment_tbl" />
+          <NavigationProperty Name="StudentTutor_tbl" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl2" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
+          <NavigationProperty Name="StudentTutor_tbl1" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl3" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
+          <NavigationProperty Name="StudentTutor_tbl2" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl4" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
+          <NavigationProperty Name="StudentTutor_tbl3" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl5" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
+        </EntityType>
+        <EntityType Name="UserClaims_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserClaims_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="UserLogins_tbl">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserLogins_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="UserRole_tbl">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Role_tbl" Relationship="Self.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" FromRole="UserRole_tbl" ToRole="Role_tbl" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserRole_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <Association Name="FK_Document_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Document_tbl" Type="Self.Document_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document_tbl">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentComment_tbl_Document_tbl">
+          <End Role="Document_tbl" Type="Self.Document_tbl" Multiplicity="1" />
+          <End Role="DocumentComment_tbl" Type="Self.DocumentComment_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentComment_tbl">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentComment_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="DocumentComment_tbl" Type="Self.DocumentComment_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentComment_tbl">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mail_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="1" />
+          <End Role="Mail_tbl" Type="Self.Mail_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Mail_tbl">
+              <PropertyRef Name="FromId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MailRecipit_tbl_Mail_tbl">
+          <End Role="Mail_tbl" Type="Self.Mail_tbl" Multiplicity="1" />
+          <End Role="MailRecipit_tbl" Type="Self.MailRecipit_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mail_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MailRecipit_tbl">
+              <PropertyRef Name="MailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MailRecipit_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="1" />
+          <End Role="MailRecipit_tbl" Type="Self.MailRecipit_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MailRecipit_tbl">
+              <PropertyRef Name="ToId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meeting_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Meeting_tbl" Type="Self.Meeting_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Meeting_tbl">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meeting_tbl_User_tbl1">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Meeting_tbl" Type="Self.Meeting_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Meeting_tbl">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeetingMinits_tbl_Meeting_tbl">
+          <End Role="Meeting_tbl" Type="Self.Meeting_tbl" Multiplicity="1" />
+          <End Role="MeetingMinits_tbl" Type="Self.MeetingMinits_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeetingMinits_tbl">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeetingMinits_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="MeetingMinits_tbl" Type="Self.MeetingMinits_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeetingMinits_tbl">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeetingMinits_tbl_User_tbl1">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="MeetingMinits_tbl" Type="Self.MeetingMinits_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MeetingMinits_tbl">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_tbl_User_tbl">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Message_tbl" Type="Self.Message_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message_tbl">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_tbl_User_tbl1">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Message_tbl" Type="Self.Message_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message_tbl">
+              <PropertyRef Name="UpdatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId">
+          <End Role="Role_tbl" Type="Self.Role_tbl" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRole_tbl" Type="Self.UserRole_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole_tbl">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="UserClaims_tbl" Type="Self.UserClaims_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClaims_tbl">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="UserLogins_tbl" Type="Self.UserLogins_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLogins_tbl">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="UserRole_tbl" Type="Self.UserRole_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole_tbl">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MeetingMember_tbl">
+          <End Role="Meeting_tbl" Type="Self.Meeting_tbl" Multiplicity="*" />
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="*" />
+        </Association>
+        <Association Name="MeetingMinitsMember_tbl">
+          <End Role="MeetingMinits_tbl" Type="Self.MeetingMinits_tbl" Multiplicity="*" />
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="ETutorEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Document_tbl" EntityType="ETutorModel.Document_tbl" />
-          <EntitySet Name="DocumentComment_tbl" EntityType="ETutorModel.DocumentComment_tbl" />
-          <EntitySet Name="Mail_tbl" EntityType="ETutorModel.Mail_tbl" />
-          <EntitySet Name="MailRecipit_tbl" EntityType="ETutorModel.MailRecipit_tbl" />
-          <EntitySet Name="Meeting_tbl" EntityType="ETutorModel.Meeting_tbl" />
-          <EntitySet Name="MeetingMinits_tbl" EntityType="ETutorModel.MeetingMinits_tbl" />
-          <EntitySet Name="Message_tbl" EntityType="ETutorModel.Message_tbl" />
+          <EntitySet Name="Document_tbl" EntityType="Self.Document_tbl" />
+          <EntitySet Name="DocumentComment_tbl" EntityType="Self.DocumentComment_tbl" />
+          <EntitySet Name="Mail_tbl" EntityType="Self.Mail_tbl" />
+          <EntitySet Name="MailRecipit_tbl" EntityType="Self.MailRecipit_tbl" />
+          <EntitySet Name="Meeting_tbl" EntityType="Self.Meeting_tbl" />
+          <EntitySet Name="MeetingMinits_tbl" EntityType="Self.MeetingMinits_tbl" />
+          <EntitySet Name="Message_tbl" EntityType="Self.Message_tbl" />
+          <EntitySet Name="Role_tbl" EntityType="Self.Role_tbl" />
+          <EntitySet Name="User_tbl" EntityType="Self.User_tbl" />
+          <EntitySet Name="UserClaims_tbl" EntityType="Self.UserClaims_tbl" />
+          <EntitySet Name="UserLogins_tbl" EntityType="Self.UserLogins_tbl" />
+          <EntitySet Name="UserRole_tbl" EntityType="Self.UserRole_tbl" />
+          <AssociationSet Name="FK_Document_tbl_User_tbl" Association="Self.FK_Document_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Document_tbl" EntitySet="Document_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentComment_tbl_Document_tbl" Association="Self.FK_DocumentComment_tbl_Document_tbl">
+            <End Role="Document_tbl" EntitySet="Document_tbl" />
+            <End Role="DocumentComment_tbl" EntitySet="DocumentComment_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentComment_tbl_User_tbl" Association="Self.FK_DocumentComment_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="DocumentComment_tbl" EntitySet="DocumentComment_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mail_tbl_User_tbl" Association="Self.FK_Mail_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Mail_tbl" EntitySet="Mail_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MailRecipit_tbl_Mail_tbl" Association="Self.FK_MailRecipit_tbl_Mail_tbl">
+            <End Role="Mail_tbl" EntitySet="Mail_tbl" />
+            <End Role="MailRecipit_tbl" EntitySet="MailRecipit_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MailRecipit_tbl_User_tbl" Association="Self.FK_MailRecipit_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="MailRecipit_tbl" EntitySet="MailRecipit_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_tbl_User_tbl" Association="Self.FK_Meeting_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_tbl_User_tbl1" Association="Self.FK_Meeting_tbl_User_tbl1">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeetingMinits_tbl_Meeting_tbl" Association="Self.FK_MeetingMinits_tbl_Meeting_tbl">
+            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
+            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeetingMinits_tbl_User_tbl" Association="Self.FK_MeetingMinits_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeetingMinits_tbl_User_tbl1" Association="Self.FK_MeetingMinits_tbl_User_tbl1">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_tbl_User_tbl" Association="Self.FK_Message_tbl_User_tbl">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Message_tbl" EntitySet="Message_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_tbl_User_tbl1" Association="Self.FK_Message_tbl_User_tbl1">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Message_tbl" EntitySet="Message_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" Association="Self.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId">
+            <End Role="Role_tbl" EntitySet="Role_tbl" />
+            <End Role="UserRole_tbl" EntitySet="UserRole_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" Association="Self.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="UserClaims_tbl" EntitySet="UserClaims_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" Association="Self.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="UserLogins_tbl" EntitySet="UserLogins_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" Association="Self.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="UserRole_tbl" EntitySet="UserRole_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="MeetingMember_tbl" Association="Self.MeetingMember_tbl">
+            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
+            <End Role="User_tbl" EntitySet="User_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="MeetingMinitsMember_tbl" Association="Self.MeetingMinitsMember_tbl">
+            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
+            <End Role="User_tbl" EntitySet="User_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="UserMessage_tbl" Association="ETutorModel.UserMessage_tbl">
+            <End Role="Message_tbl" EntitySet="Message_tbl" />
+            <End Role="User_tbl" EntitySet="User_tbl" />
+          </AssociationSet>
           <EntitySet Name="Post_tbl" EntityType="ETutorModel.Post_tbl" />
           <EntitySet Name="PostComment_tbl" EntityType="ETutorModel.PostComment_tbl" />
-          <EntitySet Name="Role_tbl" EntityType="ETutorModel.Role_tbl" />
-          <EntitySet Name="StudentTutor_tbl" EntityType="ETutorModel.StudentTutor_tbl" />
-          <EntitySet Name="User_tbl" EntityType="ETutorModel.User_tbl" />
-          <EntitySet Name="UserClaims_tbl" EntityType="ETutorModel.UserClaims_tbl" />
-          <EntitySet Name="UserLogins_tbl" EntityType="ETutorModel.UserLogins_tbl" />
-          <EntitySet Name="UserMeeting_tbl" EntityType="ETutorModel.UserMeeting_tbl" />
-          <EntitySet Name="UserMessage_tbl" EntityType="ETutorModel.UserMessage_tbl" />
-          <EntitySet Name="UserRole_tbl" EntityType="ETutorModel.UserRole_tbl" />
-          <AssociationSet Name="FK_Document_tbl_User_tbl" Association="ETutorModel.FK_Document_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Document_tbl" EntitySet="Document_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentComment_tbl_Document_tbl" Association="ETutorModel.FK_DocumentComment_tbl_Document_tbl">
-            <End Role="Document_tbl" EntitySet="Document_tbl" />
-            <End Role="DocumentComment_tbl" EntitySet="DocumentComment_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentComment_tbl_User_tbl" Association="ETutorModel.FK_DocumentComment_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="DocumentComment_tbl" EntitySet="DocumentComment_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mail_tbl_User_tbl" Association="ETutorModel.FK_Mail_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Mail_tbl" EntitySet="Mail_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MailRecipit_tbl_Mail_tbl" Association="ETutorModel.FK_MailRecipit_tbl_Mail_tbl">
-            <End Role="Mail_tbl" EntitySet="Mail_tbl" />
-            <End Role="MailRecipit_tbl" EntitySet="MailRecipit_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MailRecipit_tbl_User_tbl" Association="ETutorModel.FK_MailRecipit_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="MailRecipit_tbl" EntitySet="MailRecipit_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Meeting_tbl_User_tbl" Association="ETutorModel.FK_Meeting_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Meeting_tbl_User_tbl1" Association="ETutorModel.FK_Meeting_tbl_User_tbl1">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MeetingMinits_tbl_Meeting_tbl" Association="ETutorModel.FK_MeetingMinits_tbl_Meeting_tbl">
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserMeeting_tbl_Meeting_tbl" Association="ETutorModel.FK_UserMeeting_tbl_Meeting_tbl">
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-            <End Role="UserMeeting_tbl" EntitySet="UserMeeting_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MeetingMinits_tbl_User_tbl" Association="ETutorModel.FK_MeetingMinits_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MeetingMinits_tbl_User_tbl1" Association="ETutorModel.FK_MeetingMinits_tbl_User_tbl1">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Message_tbl_User_tbl" Association="ETutorModel.FK_Message_tbl_User_tbl">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Message_tbl" EntitySet="Message_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Message_tbl_User_tbl1" Association="ETutorModel.FK_Message_tbl_User_tbl1">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="Message_tbl" EntitySet="Message_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserMessage_tbl_Message_tbl" Association="ETutorModel.FK_UserMessage_tbl_Message_tbl">
-            <End Role="Message_tbl" EntitySet="Message_tbl" />
-            <End Role="UserMessage_tbl" EntitySet="UserMessage_tbl" />
-          </AssociationSet>
           <AssociationSet Name="FK_Post_tbl_User_tbl" Association="ETutorModel.FK_Post_tbl_User_tbl">
             <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="Post_tbl" EntitySet="Post_tbl" />
@@ -777,10 +1217,7 @@
             <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="PostComment_tbl" EntitySet="PostComment_tbl" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" Association="ETutorModel.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId">
-            <End Role="Role_tbl" EntitySet="Role_tbl" />
-            <End Role="UserRole_tbl" EntitySet="UserRole_tbl" />
-          </AssociationSet>
+          <EntitySet Name="StudentTutor_tbl" EntityType="ETutorModel.StudentTutor_tbl" />
           <AssociationSet Name="FK_StudentTutor_tbl_User_tbl2" Association="ETutorModel.FK_StudentTutor_tbl_User_tbl2">
             <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
@@ -789,136 +1226,25 @@
             <End Role="User_tbl" EntitySet="User_tbl" />
             <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" Association="ETutorModel.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id">
+          <AssociationSet Name="FK_StudentTutor_tbl_User_tbl4" Association="ETutorModel.FK_StudentTutor_tbl_User_tbl4">
             <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="UserClaims_tbl" EntitySet="UserClaims_tbl" />
+            <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" Association="ETutorModel.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id">
+          <AssociationSet Name="FK_StudentTutor_tbl_User_tbl5" Association="ETutorModel.FK_StudentTutor_tbl_User_tbl5">
             <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="UserLogins_tbl" EntitySet="UserLogins_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" Association="ETutorModel.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id">
-            <End Role="User_tbl" EntitySet="User_tbl" />
-            <End Role="UserRole_tbl" EntitySet="UserRole_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="MeetingMember_tbl" Association="ETutorModel.MeetingMember_tbl">
-            <End Role="Meeting_tbl" EntitySet="Meeting_tbl" />
-            <End Role="User_tbl" EntitySet="User_tbl" />
-          </AssociationSet>
-          <AssociationSet Name="MeetingMinitsMember_tbl" Association="ETutorModel.MeetingMinitsMember_tbl">
-            <End Role="MeetingMinits_tbl" EntitySet="MeetingMinits_tbl" />
-            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="StudentTutor_tbl" EntitySet="StudentTutor_tbl" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Document_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FileName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_Document_tbl_User_tbl" FromRole="Document_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="DocumentComment_tbl" Relationship="ETutorModel.FK_DocumentComment_tbl_Document_tbl" FromRole="Document_tbl" ToRole="DocumentComment_tbl" />
-        </EntityType>
-        <EntityType Name="DocumentComment_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DocumentId" Type="Int32" Nullable="false" />
-          <Property Name="Comment" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Document_tbl" Relationship="ETutorModel.FK_DocumentComment_tbl_Document_tbl" FromRole="DocumentComment_tbl" ToRole="Document_tbl" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_DocumentComment_tbl_User_tbl" FromRole="DocumentComment_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="Mail_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FromId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MailBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TriggerBy" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsFail" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_Mail_tbl_User_tbl" FromRole="Mail_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="MailRecipit_tbl" Relationship="ETutorModel.FK_MailRecipit_tbl_Mail_tbl" FromRole="Mail_tbl" ToRole="MailRecipit_tbl" />
-        </EntityType>
-        <EntityType Name="MailRecipit_tbl">
-          <Key>
-            <PropertyRef Name="MailId" />
-            <PropertyRef Name="ToId" />
-          </Key>
-          <Property Name="MailId" Type="Int32" Nullable="false" />
-          <Property Name="ToId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="IsFail" Type="Boolean" />
-          <NavigationProperty Name="Mail_tbl" Relationship="ETutorModel.FK_MailRecipit_tbl_Mail_tbl" FromRole="MailRecipit_tbl" ToRole="Mail_tbl" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_MailRecipit_tbl_User_tbl" FromRole="MailRecipit_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="Meeting_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="MeetingDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Venue" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsCanceled" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_Meeting_tbl_User_tbl" FromRole="Meeting_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="User_tbl1" Relationship="ETutorModel.FK_Meeting_tbl_User_tbl1" FromRole="Meeting_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="MeetingMinits_tbl" Relationship="ETutorModel.FK_MeetingMinits_tbl_Meeting_tbl" FromRole="Meeting_tbl" ToRole="MeetingMinits_tbl" />
-          <NavigationProperty Name="UserMeeting_tbl" Relationship="ETutorModel.FK_UserMeeting_tbl_Meeting_tbl" FromRole="Meeting_tbl" ToRole="UserMeeting_tbl" />
-          <NavigationProperty Name="User_tbl2" Relationship="ETutorModel.MeetingMember_tbl" FromRole="Meeting_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="MeetingMinits_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MeetingId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Meeting_tbl" Relationship="ETutorModel.FK_MeetingMinits_tbl_Meeting_tbl" FromRole="MeetingMinits_tbl" ToRole="Meeting_tbl" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_MeetingMinits_tbl_User_tbl" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="User_tbl1" Relationship="ETutorModel.FK_MeetingMinits_tbl_User_tbl1" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="User_tbl2" Relationship="ETutorModel.MeetingMinitsMember_tbl" FromRole="MeetingMinits_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="Message_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_Message_tbl_User_tbl" FromRole="Message_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="User_tbl1" Relationship="ETutorModel.FK_Message_tbl_User_tbl1" FromRole="Message_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="UserMessage_tbl" Relationship="ETutorModel.FK_UserMessage_tbl_Message_tbl" FromRole="Message_tbl" ToRole="UserMessage_tbl" />
-        </EntityType>
+        <Association Name="UserMessage_tbl">
+          <End Type="ETutorModel.Message_tbl" Role="Message_tbl" Multiplicity="*" />
+          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="*" />
+        </Association>
         <EntityType Name="Post_tbl">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="PostBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreateOn" Type="DateTime" Precision="3" />
@@ -941,298 +1267,6 @@
           <NavigationProperty Name="Post_tbl" Relationship="ETutorModel.FK_PostComment_tbl_Post_tbl" FromRole="PostComment_tbl" ToRole="Post_tbl" />
           <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_PostComment_tbl_User_tbl" FromRole="PostComment_tbl" ToRole="User_tbl" />
         </EntityType>
-        <EntityType Name="Role_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserRole_tbl" Relationship="ETutorModel.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" FromRole="Role_tbl" ToRole="UserRole_tbl" />
-        </EntityType>
-        <EntityType Name="StudentTutor_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StudentId" Type="Int32" />
-          <Property Name="TutorId" Type="Int32" />
-          <Property Name="IsCurrent" Type="Boolean" />
-          <Property Name="CreateOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl2" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
-          <NavigationProperty Name="User_tbl1" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl3" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="User_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Document_tbl" Relationship="ETutorModel.FK_Document_tbl_User_tbl" FromRole="User_tbl" ToRole="Document_tbl" />
-          <NavigationProperty Name="DocumentComment_tbl" Relationship="ETutorModel.FK_DocumentComment_tbl_User_tbl" FromRole="User_tbl" ToRole="DocumentComment_tbl" />
-          <NavigationProperty Name="Mail_tbl" Relationship="ETutorModel.FK_Mail_tbl_User_tbl" FromRole="User_tbl" ToRole="Mail_tbl" />
-          <NavigationProperty Name="MailRecipit_tbl" Relationship="ETutorModel.FK_MailRecipit_tbl_User_tbl" FromRole="User_tbl" ToRole="MailRecipit_tbl" />
-          <NavigationProperty Name="Meeting_tbl" Relationship="ETutorModel.FK_Meeting_tbl_User_tbl" FromRole="User_tbl" ToRole="Meeting_tbl" />
-          <NavigationProperty Name="Meeting_tbl1" Relationship="ETutorModel.FK_Meeting_tbl_User_tbl1" FromRole="User_tbl" ToRole="Meeting_tbl" />
-          <NavigationProperty Name="MeetingMinits_tbl" Relationship="ETutorModel.FK_MeetingMinits_tbl_User_tbl" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
-          <NavigationProperty Name="MeetingMinits_tbl1" Relationship="ETutorModel.FK_MeetingMinits_tbl_User_tbl1" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
-          <NavigationProperty Name="Message_tbl" Relationship="ETutorModel.FK_Message_tbl_User_tbl" FromRole="User_tbl" ToRole="Message_tbl" />
-          <NavigationProperty Name="Message_tbl1" Relationship="ETutorModel.FK_Message_tbl_User_tbl1" FromRole="User_tbl" ToRole="Message_tbl" />
-          <NavigationProperty Name="Post_tbl" Relationship="ETutorModel.FK_Post_tbl_User_tbl" FromRole="User_tbl" ToRole="Post_tbl" />
-          <NavigationProperty Name="PostComment_tbl" Relationship="ETutorModel.FK_PostComment_tbl_User_tbl" FromRole="User_tbl" ToRole="PostComment_tbl" />
-          <NavigationProperty Name="StudentTutor_tbl" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl2" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
-          <NavigationProperty Name="StudentTutor_tbl1" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl3" FromRole="User_tbl" ToRole="StudentTutor_tbl" />
-          <NavigationProperty Name="UserClaims_tbl" Relationship="ETutorModel.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserClaims_tbl" />
-          <NavigationProperty Name="UserLogins_tbl" Relationship="ETutorModel.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserLogins_tbl" />
-          <NavigationProperty Name="UserRole_tbl" Relationship="ETutorModel.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="User_tbl" ToRole="UserRole_tbl" />
-          <NavigationProperty Name="Meeting_tbl2" Relationship="ETutorModel.MeetingMember_tbl" FromRole="User_tbl" ToRole="Meeting_tbl" />
-          <NavigationProperty Name="MeetingMinits_tbl2" Relationship="ETutorModel.MeetingMinitsMember_tbl" FromRole="User_tbl" ToRole="MeetingMinits_tbl" />
-        </EntityType>
-        <EntityType Name="UserClaims_tbl">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserClaims_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="UserLogins_tbl">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserLogins_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <EntityType Name="UserMeeting_tbl">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="MeetingId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="MeetingId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Meeting_tbl" Relationship="ETutorModel.FK_UserMeeting_tbl_Meeting_tbl" FromRole="UserMeeting_tbl" ToRole="Meeting_tbl" />
-        </EntityType>
-        <EntityType Name="UserMessage_tbl">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="MessageId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="MessageId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Message_tbl" Relationship="ETutorModel.FK_UserMessage_tbl_Message_tbl" FromRole="UserMessage_tbl" ToRole="Message_tbl" />
-        </EntityType>
-        <EntityType Name="UserRole_tbl">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Role_tbl" Relationship="ETutorModel.FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId" FromRole="UserRole_tbl" ToRole="Role_tbl" />
-          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id" FromRole="UserRole_tbl" ToRole="User_tbl" />
-        </EntityType>
-        <Association Name="FK_Document_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.Document_tbl" Role="Document_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Document_tbl">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocumentComment_tbl_Document_tbl">
-          <End Type="ETutorModel.Document_tbl" Role="Document_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.DocumentComment_tbl" Role="DocumentComment_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Document_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentComment_tbl">
-              <PropertyRef Name="DocumentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocumentComment_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.DocumentComment_tbl" Role="DocumentComment_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentComment_tbl">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Mail_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.Mail_tbl" Role="Mail_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Mail_tbl">
-              <PropertyRef Name="FromId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MailRecipit_tbl_Mail_tbl">
-          <End Type="ETutorModel.Mail_tbl" Role="Mail_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.MailRecipit_tbl" Role="MailRecipit_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Mail_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MailRecipit_tbl">
-              <PropertyRef Name="MailId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MailRecipit_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.MailRecipit_tbl" Role="MailRecipit_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MailRecipit_tbl">
-              <PropertyRef Name="ToId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Meeting_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.Meeting_tbl" Role="Meeting_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Meeting_tbl">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Meeting_tbl_User_tbl1">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.Meeting_tbl" Role="Meeting_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Meeting_tbl">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MeetingMinits_tbl_Meeting_tbl">
-          <End Type="ETutorModel.Meeting_tbl" Role="Meeting_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.MeetingMinits_tbl" Role="MeetingMinits_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MeetingMinits_tbl">
-              <PropertyRef Name="MeetingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserMeeting_tbl_Meeting_tbl">
-          <End Type="ETutorModel.Meeting_tbl" Role="Meeting_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.UserMeeting_tbl" Role="UserMeeting_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserMeeting_tbl">
-              <PropertyRef Name="MeetingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MeetingMinits_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.MeetingMinits_tbl" Role="MeetingMinits_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MeetingMinits_tbl">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MeetingMinits_tbl_User_tbl1">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.MeetingMinits_tbl" Role="MeetingMinits_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MeetingMinits_tbl">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Message_tbl_User_tbl">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.Message_tbl" Role="Message_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message_tbl">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Message_tbl_User_tbl1">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.Message_tbl" Role="Message_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message_tbl">
-              <PropertyRef Name="UpdatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserMessage_tbl_Message_tbl">
-          <End Type="ETutorModel.Message_tbl" Role="Message_tbl" Multiplicity="1" />
-          <End Type="ETutorModel.UserMessage_tbl" Role="UserMessage_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Message_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserMessage_tbl">
-              <PropertyRef Name="MessageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Post_tbl_User_tbl">
           <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
           <End Type="ETutorModel.Post_tbl" Role="Post_tbl" Multiplicity="*" />
@@ -1269,20 +1303,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_UserRole_tbl_dbo_Role_tbl_RoleId">
-          <End Type="ETutorModel.Role_tbl" Role="Role_tbl" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ETutorModel.UserRole_tbl" Role="UserRole_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserRole_tbl">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="StudentTutor_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TutorId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsCurrent" Type="Boolean" />
+          <Property Name="CreateOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_tbl" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl2" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl1" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl3" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl2" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl4" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl3" Relationship="ETutorModel.FK_StudentTutor_tbl_User_tbl5" FromRole="StudentTutor_tbl" ToRole="User_tbl" />
+        </EntityType>
         <Association Name="FK_StudentTutor_tbl_User_tbl2">
           <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
           <End Type="ETutorModel.StudentTutor_tbl" Role="StudentTutor_tbl" Multiplicity="*" />
@@ -1307,49 +1344,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_UserClaims_tbl_dbo_User_tbl_IdentityUser_Id">
+        <Association Name="FK_StudentTutor_tbl_User_tbl4">
           <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.UserClaims_tbl" Role="UserClaims_tbl" Multiplicity="*" />
+          <End Type="ETutorModel.StudentTutor_tbl" Role="StudentTutor_tbl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User_tbl">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserClaims_tbl">
-              <PropertyRef Name="IdentityUser_Id" />
+            <Dependent Role="StudentTutor_tbl">
+              <PropertyRef Name="TutorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_UserLogins_tbl_dbo_User_tbl_IdentityUser_Id">
+        <Association Name="FK_StudentTutor_tbl_User_tbl5">
           <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.UserLogins_tbl" Role="UserLogins_tbl" Multiplicity="*" />
+          <End Type="ETutorModel.StudentTutor_tbl" Role="StudentTutor_tbl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User_tbl">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserLogins_tbl">
-              <PropertyRef Name="IdentityUser_Id" />
+            <Dependent Role="StudentTutor_tbl">
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_UserRole_tbl_dbo_User_tbl_IdentityUser_Id">
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="0..1" />
-          <End Type="ETutorModel.UserRole_tbl" Role="UserRole_tbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_tbl">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserRole_tbl">
-              <PropertyRef Name="IdentityUser_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="MeetingMember_tbl">
-          <End Type="ETutorModel.Meeting_tbl" Role="Meeting_tbl" Multiplicity="*" />
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="*" />
-        </Association>
-        <Association Name="MeetingMinitsMember_tbl">
-          <End Type="ETutorModel.MeetingMinits_tbl" Role="MeetingMinits_tbl" Multiplicity="*" />
-          <End Type="ETutorModel.User_tbl" Role="User_tbl" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1360,93 +1377,174 @@
           <EntitySetMapping Name="Document_tbl">
             <EntityTypeMapping TypeName="ETutorModel.Document_tbl">
               <MappingFragment StoreEntitySet="Document_tbl">
-                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DocumentComment_tbl">
             <EntityTypeMapping TypeName="ETutorModel.DocumentComment_tbl">
               <MappingFragment StoreEntitySet="DocumentComment_tbl">
-                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Mail_tbl">
             <EntityTypeMapping TypeName="ETutorModel.Mail_tbl">
               <MappingFragment StoreEntitySet="Mail_tbl">
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="IsFail" ColumnName="IsFail" />
-                <ScalarProperty Name="TriggerBy" ColumnName="TriggerBy" />
-                <ScalarProperty Name="MailBody" ColumnName="MailBody" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="FromId" ColumnName="FromId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FromId" ColumnName="FromId" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="MailBody" ColumnName="MailBody" />
+                <ScalarProperty Name="TriggerBy" ColumnName="TriggerBy" />
+                <ScalarProperty Name="IsFail" ColumnName="IsFail" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MailRecipit_tbl">
             <EntityTypeMapping TypeName="ETutorModel.MailRecipit_tbl">
               <MappingFragment StoreEntitySet="MailRecipit_tbl">
-                <ScalarProperty Name="IsFail" ColumnName="IsFail" />
-                <ScalarProperty Name="ToId" ColumnName="ToId" />
                 <ScalarProperty Name="MailId" ColumnName="MailId" />
+                <ScalarProperty Name="ToId" ColumnName="ToId" />
+                <ScalarProperty Name="IsFail" ColumnName="IsFail" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Meeting_tbl">
             <EntityTypeMapping TypeName="ETutorModel.Meeting_tbl">
               <MappingFragment StoreEntitySet="Meeting_tbl">
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
-                <ScalarProperty Name="Venue" ColumnName="Venue" />
-                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
+                <ScalarProperty Name="Venue" ColumnName="Venue" />
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MeetingMinits_tbl">
             <EntityTypeMapping TypeName="ETutorModel.MeetingMinits_tbl">
               <MappingFragment StoreEntitySet="MeetingMinits_tbl">
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Message_tbl">
             <EntityTypeMapping TypeName="ETutorModel.Message_tbl">
               <MappingFragment StoreEntitySet="Message_tbl">
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdateOn" ColumnName="UpdateOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Role_tbl">
+            <EntityTypeMapping TypeName="ETutorModel.Role_tbl">
+              <MappingFragment StoreEntitySet="Role_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_tbl">
+            <EntityTypeMapping TypeName="ETutorModel.User_tbl">
+              <MappingFragment StoreEntitySet="User_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserClaims_tbl">
+            <EntityTypeMapping TypeName="ETutorModel.UserClaims_tbl">
+              <MappingFragment StoreEntitySet="UserClaims_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins_tbl">
+            <EntityTypeMapping TypeName="ETutorModel.UserLogins_tbl">
+              <MappingFragment StoreEntitySet="UserLogins_tbl">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRole_tbl">
+            <EntityTypeMapping TypeName="ETutorModel.UserRole_tbl">
+              <MappingFragment StoreEntitySet="UserRole_tbl">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="MeetingMember_tbl" TypeName="ETutorModel.MeetingMember_tbl" StoreEntitySet="MeetingMember_tbl">
+            <EndProperty Name="Meeting_tbl">
+              <ScalarProperty Name="Id" ColumnName="MeetingId" />
+            </EndProperty>
+            <EndProperty Name="User_tbl">
+              <ScalarProperty Name="Id" ColumnName="Member" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MeetingMinitsMember_tbl" TypeName="ETutorModel.MeetingMinitsMember_tbl" StoreEntitySet="MeetingMinitsMember_tbl">
+            <EndProperty Name="MeetingMinits_tbl">
+              <ScalarProperty Name="Id" ColumnName="MitingMinitsId" />
+            </EndProperty>
+            <EndProperty Name="User_tbl">
+              <ScalarProperty Name="Id" ColumnName="Member" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserMessage_tbl" TypeName="ETutorModel.UserMessage_tbl" StoreEntitySet="UserMessage_tbl">
+            <EndProperty Name="User_tbl">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Message_tbl">
+              <ScalarProperty Name="Id" ColumnName="MessageId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <EntitySetMapping Name="Post_tbl">
             <EntityTypeMapping TypeName="ETutorModel.Post_tbl">
               <MappingFragment StoreEntitySet="Post_tbl">
@@ -1455,6 +1553,7 @@
                 <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="PostBody" ColumnName="PostBody" />
+                <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1468,14 +1567,6 @@
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Role_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.Role_tbl">
-              <MappingFragment StoreEntitySet="Role_tbl">
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1494,87 +1585,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="User_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.User_tbl">
-              <MappingFragment StoreEntitySet="User_tbl">
-                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserClaims_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.UserClaims_tbl">
-              <MappingFragment StoreEntitySet="UserClaims_tbl">
-                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserLogins_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.UserLogins_tbl">
-              <MappingFragment StoreEntitySet="UserLogins_tbl">
-                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserMeeting_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.UserMeeting_tbl">
-              <MappingFragment StoreEntitySet="UserMeeting_tbl">
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserMessage_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.UserMessage_tbl">
-              <MappingFragment StoreEntitySet="UserMessage_tbl">
-                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserRole_tbl">
-            <EntityTypeMapping TypeName="ETutorModel.UserRole_tbl">
-              <MappingFragment StoreEntitySet="UserRole_tbl">
-                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="MeetingMember_tbl" TypeName="ETutorModel.MeetingMember_tbl" StoreEntitySet="MeetingMember_tbl">
-            <EndProperty Name="User_tbl">
-              <ScalarProperty Name="Id" ColumnName="Member" />
-            </EndProperty>
-            <EndProperty Name="Meeting_tbl">
-              <ScalarProperty Name="Id" ColumnName="MeetingId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MeetingMinitsMember_tbl" TypeName="ETutorModel.MeetingMinitsMember_tbl" StoreEntitySet="MeetingMinitsMember_tbl">
-            <EndProperty Name="User_tbl">
-              <ScalarProperty Name="Id" ColumnName="Member" />
-            </EndProperty>
-            <EndProperty Name="MeetingMinits_tbl">
-              <ScalarProperty Name="Id" ColumnName="MitingMinitsId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

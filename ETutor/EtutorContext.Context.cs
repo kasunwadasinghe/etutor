@@ -32,15 +32,13 @@ namespace ETutor
         public virtual DbSet<Meeting_tbl> Meeting_tbl { get; set; }
         public virtual DbSet<MeetingMinits_tbl> MeetingMinits_tbl { get; set; }
         public virtual DbSet<Message_tbl> Message_tbl { get; set; }
-        public virtual DbSet<Post_tbl> Post_tbl { get; set; }
-        public virtual DbSet<PostComment_tbl> PostComment_tbl { get; set; }
         public virtual DbSet<Role_tbl> Role_tbl { get; set; }
-        public virtual DbSet<StudentTutor_tbl> StudentTutor_tbl { get; set; }
         public virtual DbSet<User_tbl> User_tbl { get; set; }
         public virtual DbSet<UserClaims_tbl> UserClaims_tbl { get; set; }
         public virtual DbSet<UserLogins_tbl> UserLogins_tbl { get; set; }
-        public virtual DbSet<UserMeeting_tbl> UserMeeting_tbl { get; set; }
-        public virtual DbSet<UserMessage_tbl> UserMessage_tbl { get; set; }
         public virtual DbSet<UserRole_tbl> UserRole_tbl { get; set; }
+        public virtual DbSet<Post_tbl> Post_tbl { get; set; }
+        public virtual DbSet<PostComment_tbl> PostComment_tbl { get; set; }
+        public virtual DbSet<StudentTutor_tbl> StudentTutor_tbl { get; set; }
     }
 }
